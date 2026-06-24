@@ -1,6 +1,6 @@
 # Urban Energy — Mac mini deployment.
 # web (nginx) is the only published port; Cloudflare Tunnel points
-# urbanenergy-charge.newavera.co.il → http://localhost:8098
+# urbanenergy-charge.newavera.co.il → http://localhost:8101
 services:
   backend:
     build: ./backend
@@ -17,5 +17,5 @@ services:
     depends_on:
       - backend
     ports:
-      - "8098:80"                      # host:container — adjust host port if 8098 is taken
+      - "8101:80"                      # host:container — 8101 is the next free port on the Mac mini
     restart: unless-stopped

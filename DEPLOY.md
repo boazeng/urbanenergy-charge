@@ -5,7 +5,7 @@ Pattern: Docker Compose (backend + nginx) behind your existing Cloudflare Tunnel
 same as `tact-main` / `customer-site`.
 
 ```
-Cloudflare Tunnel ──▶ Mac mini localhost:8098 (web/nginx)
+Cloudflare Tunnel ──▶ Mac mini localhost:8101 (web/nginx)
                           ├─ /        → built React dashboard
                           └─ /api/*   → backend container (uvicorn :8060)
 ```
@@ -44,12 +44,12 @@ EOF
 ```bash
 docker compose up -d --build
 docker compose ps          # both services "running"
-curl -s localhost:8098/api/ready    # {"ready":true,"dataSource":"evoltsoft"}
+curl -s localhost:8101/api/ready    # {"ready":true,"dataSource":"evoltsoft"}
 ```
 
-Open `http://<mac-mini-ip>:8098` on the LAN to sanity-check the dashboard.
+Open `http://<mac-mini-ip>:8101` on the LAN to sanity-check the dashboard.
 
-If port 8098 is taken, change the host port in `docker-compose.yml` (`web.ports`).
+If port 8101 is taken, change the host port in `docker-compose.yml` (`web.ports`).
 
 ## 4. Point the domain at it (Cloudflare Tunnel)
 
@@ -59,7 +59,7 @@ rule **above** the catch-all:
 ```yaml
 ingress:
   - hostname: urbanenergy-charge.newavera.co.il
-    service: http://localhost:8098
+    service: http://localhost:8101
   # ... your existing rules ...
   - service: http_status:404
 ```
@@ -70,7 +70,7 @@ or however you run it).
 **If you manage the tunnel from the Cloudflare dashboard** (Zero Trust → Networks →
 Tunnels → your tunnel → Public Hostname → Add):
 - Subdomain: `urbanenergy-charge`, Domain: `newavera.co.il`
-- Service: `HTTP` → `localhost:8098`
+- Service: `HTTP` → `localhost:8101`
 
 DNS propagates in seconds; then **https://urbanenergy-charge.newavera.co.il** is live.
 
