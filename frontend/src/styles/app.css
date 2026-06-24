@@ -1,0 +1,109 @@
+/* Dashboard layout — built on TACT tokens. Elegant, calm, RTL. */
+
+.ue-shell { min-height: 100vh; }
+
+/* ---- top bar ---- */
+.ue-bar { justify-content: space-between; }
+.ue-bar-side { display: flex; align-items: center; gap: 18px; }
+.ue-user {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--color-primary); color: var(--color-text-white);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-family-en); font-weight: 700; font-size: .95rem;
+}
+
+/* ---- page heading ---- */
+.ue-main { padding: 32px 0 60px; }
+.ue-head { display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 26px; flex-wrap: wrap; gap: 12px; }
+.ue-title { font-size: var(--font-size-2xl); font-weight: 800; color: var(--color-primary); }
+.ue-sub { color: var(--color-text-light); font-size: var(--font-size-sm); margin-top: 4px; }
+
+/* ---- KPI grid ---- */
+.ue-kpis {
+  display: grid; gap: 16px; margin-bottom: 26px;
+  grid-template-columns: repeat(auto-fill, minmax(212px, 1fr));
+}
+.ue-kpi {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-sm);
+  transition: transform .22s, box-shadow .22s, border-color .22s;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.ue-kpi:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: #D5DFEA;
+}
+.ue-kpi-top { display: flex; align-items: center; justify-content: space-between; }
+.ue-kpi-label { font-size: .82rem; font-weight: 600; color: var(--color-accent); }
+.ue-kpi-ico {
+  width: 36px; height: 36px; border-radius: 10px;
+  background: var(--color-primary-soft); color: var(--color-primary);
+  display: flex; align-items: center; justify-content: center;
+}
+.ue-kpi-val {
+  font-family: var(--font-family-en); font-weight: 700; font-size: 1.95rem;
+  color: var(--color-text); letter-spacing: -.01em; line-height: 1.1;
+}
+.ue-kpi-unit { font-size: .82rem; color: var(--color-text-light); font-weight: 500; }
+.ue-delta { font-size: .78rem; font-weight: 600; display: inline-flex; align-items: center; gap: 3px; }
+.ue-delta.up { color: var(--color-pos); }
+.ue-delta.down { color: var(--color-accent); }
+.ue-delta.flat { color: var(--color-text-light); }
+
+/* ---- panels (charts + table) ---- */
+.ue-panels { display: grid; gap: 18px; grid-template-columns: 2fr 1fr; margin-bottom: 18px; }
+.ue-panels-2 { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
+@media (max-width: 900px) {
+  .ue-panels, .ue-panels-2 { grid-template-columns: 1fr; }
+}
+.ue-panel {
+  background: var(--color-bg-white);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: 20px 22px;
+}
+.ue-panel-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.ue-panel-title { font-size: 1.05rem; font-weight: 700; color: var(--color-primary); }
+.ue-panel-note { font-size: .78rem; color: var(--color-text-light); }
+
+/* ---- legend for donut ---- */
+.ue-legend { display: flex; flex-direction: column; gap: 10px; margin-top: 8px; }
+.ue-legend-row { display: flex; align-items: center; justify-content: space-between; font-size: .86rem; }
+.ue-legend-name { display: flex; align-items: center; gap: 8px; color: var(--color-text); }
+.ue-dot { width: 10px; height: 10px; border-radius: 50%; }
+.ue-legend-val { font-family: var(--font-family-en); font-weight: 600; color: var(--color-text); }
+
+/* ---- partners / settlement table ---- */
+.ue-table { width: 100%; border-collapse: collapse; }
+.ue-table th {
+  text-align: right; font-size: .76rem; font-weight: 600; color: var(--color-text-light);
+  padding: 10px 12px; border-bottom: 1px solid var(--color-border);
+}
+.ue-table td { padding: 12px; border-bottom: 1px solid var(--color-border); font-size: .9rem; }
+.ue-table tr:last-child td { border-bottom: none; }
+.ue-table tr:hover td { background: var(--color-primary-soft); }
+.ue-num { font-family: var(--font-family-en); text-align: left; font-weight: 600; }
+.ue-pos { color: var(--color-pos); }
+.ue-neg { color: var(--color-accent); }
+
+.ue-loading { padding: 80px 0; text-align: center; color: var(--color-text-light); }
+
+/* ---- status pill ---- */
+.ue-status { font-size: .72rem; font-weight: 700; padding: 3px 10px; border-radius: 999px; }
+.ue-status.on { background: var(--color-pos-soft); color: var(--color-pos); }
+.ue-status.off { background: var(--color-bg); color: var(--color-text-light); border: 1px solid var(--color-border); }
+.ue-status.fin { background: var(--color-pos-soft); color: var(--color-pos); }
+.ue-status.run { background: var(--color-primary-soft); color: var(--color-primary); }
+.ue-status.rej { background: rgba(214, 74, 46, 0.12); color: var(--color-accent); }
+
+/* ---- single full-width panel + KPI strip for list pages ---- */
+.ue-strip { display: grid; gap: 16px; margin-bottom: 22px;
+  grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); }
+.ue-count { color: var(--color-text-light); font-size: var(--font-size-sm); font-weight: 600; }
+.ue-settle-btn { margin-top: 2px; }

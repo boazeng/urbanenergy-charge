@@ -1,0 +1,30 @@
+# ---- Secrets & local state — NEVER commit ----
+.env                 # backend/.env holds the Evoltsoft password (.env.example IS committed)
+*.db
+*.sqlite3
+*.log
+
+# ---- Reverse-engineering / recon material (large + contains auth tokens & personal data) ----
+*.har
+reference/download urbanenergy/
+reference/api_analysis.txt
+reference/analytics
+session_api.txt
+
+# ---- Python ----
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# ---- Node ----
+node_modules/
+dist/
+.vite/
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db

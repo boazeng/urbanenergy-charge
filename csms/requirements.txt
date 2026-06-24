@@ -1,0 +1,4 @@
+# CSMS POC — OCPP 1.6J central system
+# Pinned to versions known to interoperate (ocpp lib + websockets handler signature)
+ocpp==2.0.0
+websockets==13.1
