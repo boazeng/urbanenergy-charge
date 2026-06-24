@@ -37,3 +37,5 @@ cd frontend && npm install && npm run dev
 
 Configuration is via env (`UE_*`); copy `backend/.env.example` to `backend/.env`.
 Secrets never live in the repo.
+
+<!-- auto-deploy verified 2026-06-25 -->
