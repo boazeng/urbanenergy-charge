@@ -1,0 +1,21 @@
+# Urban Energy — Mac mini deployment.
+# web (nginx) is the only published port; Cloudflare Tunnel points
+# urbanenergy-charge.newavera.co.il → http://localhost:8098
+services:
+  backend:
+    build: ./backend
+    env_file: ./backend/.env          # Evoltsoft credentials (NOT in git)
+    environment:
+      UE_ENV: prod
+      UE_DATA_SOURCE: evoltsoft
+    expose:
+      - "8060"
+    restart: unless-stopped
+
+  web:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "8098:80"                      # host:container — adjust host port if 8098 is taken
+    restart: unless-stopped

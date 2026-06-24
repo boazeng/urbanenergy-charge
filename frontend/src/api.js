@@ -1,5 +1,7 @@
-// Single place that talks to the management API. Swap BASE later for prod.
-const BASE = 'http://localhost:8060/api'
+// Single place that talks to the management API.
+// Same-origin '/api' in prod (nginx proxies it to the backend); the Vite dev
+// server proxies '/api' → localhost:8060. Override with VITE_API_BASE if needed.
+const BASE = import.meta.env.VITE_API_BASE ?? '/api'
 
 async function get(path) {
   const r = await fetch(`${BASE}${path}`)
