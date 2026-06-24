@@ -9,8 +9,8 @@ services:
     environment:
       UE_ENV: prod
       UE_DATA_SOURCE: evoltsoft
-      # Flip to "true" AFTER the Google redirect URI is registered (avoids lockout).
-      UE_AUTH_ENABLED: "false"
+      # Google redirect URI registered → auth ON.
+      UE_AUTH_ENABLED: "true"
     volumes:
       - auth-data:/data               # persists shared-auth user/roles DB
     ports:
