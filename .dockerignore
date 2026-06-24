@@ -1,0 +1,15 @@
+.git
+**/node_modules
+**/.venv
+**/__pycache__
+**/.mypy_cache
+**/.ruff_cache
+**/.pytest_cache
+**/dist
+**/.vite
+**/*.log
+**/*.db
+**/.env
+reference
+csms
+*.md

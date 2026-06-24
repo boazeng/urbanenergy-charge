@@ -50,6 +50,17 @@ class Settings(BaseSettings):
     sentry_dsn: str = ""
     auth_mode: AuthMode = AuthMode.dev
 
+    # --- shared-auth (Google OAuth) integration ---
+    # When enabled, the app installs shared-auth: every request needs a Google
+    # login (allow-listed emails) except the health probes. Google client creds
+    # come from the shared env (GOOGLE_OAUTH_*, AUTH_*) read by shared-auth itself.
+    auth_enabled: bool = False
+    auth_db_path: str = "/data/auth.db"
+    auth_redirect_uri: str = "https://urbanenergy-charge.newavera.co.il/auth/callback"
+    auth_initial_admin: str = "boazen@gmail.com"
+    # The built SPA is served from here when present (single-container deploy).
+    static_dir: str = "static"
+
     # --- Evoltsoft (Urban Energy vendor) — Phase 1, removable. ---
     # All env vars use the UE_ prefix, e.g. UE_EVOLTSOFT_EMAIL.
     evoltsoft_base_url: str = "https://asia-south1-urbanenergy-prod.cloudfunctions.net"

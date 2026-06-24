@@ -10,6 +10,7 @@ selection (Ports & Adapters). Run with:
 from __future__ import annotations
 
 import logging
+import os
 import uuid
 from collections.abc import AsyncIterator, Awaitable, Callable
 from contextlib import asynccontextmanager
@@ -17,10 +18,11 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.adapters.factory import build_data_source
 from app.api.router import api_router
-from app.core.config import get_settings
+from app.core.config import Settings, get_settings
 from app.core.logging import configure_logging, request_id_ctx
 
 log = logging.getLogger("app")
@@ -87,7 +89,36 @@ def create_app() -> FastAPI:
         return JSONResponse(status_code=500, content={"detail": "internal error"})
 
     app.include_router(api_router)
+    _install_auth(app, settings)
+    _mount_spa(app, settings)
     return app
+
+
+def _install_auth(app: FastAPI, settings: Settings) -> None:
+    """Install shared-auth (Google login + roles). Guards everything but the
+    health probes; unauthenticated browsers are redirected to Google, API calls
+    get 401. Safety nets (super-admin, emergency login) come from shared-auth.
+    """
+    if not settings.auth_enabled:
+        log.warning("auth DISABLED — site is open (rely on Cloudflare Access at the edge)")
+        return
+    from shared_auth import install_auth
+
+    install_auth(
+        app,
+        db_path=settings.auth_db_path,
+        redirect_uri=settings.auth_redirect_uri,
+        initial_users=[{"email": settings.auth_initial_admin, "role": "admin"}],
+        public_prefixes=("/api/health", "/api/ready"),
+    )
+    log.info("shared-auth installed", extra={"redirect_uri": settings.auth_redirect_uri})
+
+
+def _mount_spa(app: FastAPI, settings: Settings) -> None:
+    """Serve the built React SPA from the same origin (single-container deploy)."""
+    if os.path.isdir(settings.static_dir):
+        app.mount("/", StaticFiles(directory=settings.static_dir, html=True), name="spa")
+        log.info("serving SPA", extra={"dir": settings.static_dir})
 
 
 app = create_app()

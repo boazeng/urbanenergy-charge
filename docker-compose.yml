@@ -1,21 +1,21 @@
-# Urban Energy — Mac mini deployment.
-# web (nginx) is the only published port; Cloudflare Tunnel points
-# urbanenergy-charge.newavera.co.il → http://localhost:8101
+# Urban Energy — Mac mini deployment (single container: SPA + API from FastAPI).
+# Cloudflare Tunnel points urbanenergy-charge.newavera.co.il → http://localhost:8101
 services:
-  backend:
-    build: ./backend
-    env_file: ./backend/.env          # Evoltsoft credentials (NOT in git)
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file: ./backend/.env          # Evoltsoft + Google-auth secrets (NOT in git)
     environment:
       UE_ENV: prod
       UE_DATA_SOURCE: evoltsoft
-    expose:
-      - "8060"
+      # Flip to "true" AFTER the Google redirect URI is registered (avoids lockout).
+      UE_AUTH_ENABLED: "false"
+    volumes:
+      - auth-data:/data               # persists shared-auth user/roles DB
+    ports:
+      - "8101:8060"                   # host:container — 8101 is free on the Mac mini
     restart: unless-stopped
 
-  web:
-    build: ./frontend
-    depends_on:
-      - backend
-    ports:
-      - "8101:80"                      # host:container — 8101 is the next free port on the Mac mini
-    restart: unless-stopped
+volumes:
+  auth-data:
