@@ -27,6 +27,15 @@ from app.core.logging import configure_logging, request_id_ctx
 
 log = logging.getLogger("app")
 
+# Seeded once on startup (idempotent — never overrides changes made later in the UI).
+_INITIAL_ADMINS = [
+    {"email": "boazen@gmail.com", "role": "admin", "name": "בועז"},
+    {"email": "yael.israel303@gmail.com", "role": "admin", "name": "רעות"},
+    {"email": "yosieng1@gmail.com", "role": "admin", "name": "יוסי"},
+    {"email": "zohareng@gmail.com", "role": "admin", "name": "זוהר"},
+    {"email": "zvi@englander-law.com", "role": "admin", "name": "צביקה"},
+]
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI) -> AsyncIterator[None]:
@@ -108,7 +117,7 @@ def _install_auth(app: FastAPI, settings: Settings) -> None:
         app,
         db_path=settings.auth_db_path,
         redirect_uri=settings.auth_redirect_uri,
-        initial_users=[{"email": settings.auth_initial_admin, "role": "admin"}],
+        initial_users=_INITIAL_ADMINS,
         public_prefixes=("/api/health", "/api/ready"),
     )
     log.info("shared-auth installed", extra={"redirect_uri": settings.auth_redirect_uri})
